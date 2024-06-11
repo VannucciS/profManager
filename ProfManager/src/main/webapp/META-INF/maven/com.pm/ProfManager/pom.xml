@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<!-- tabwidth=4 preferspaces=true - indicate original formatting preferences; change to whatever you prefer -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.pm</groupId>
+    <artifactId>ProfManager</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>ProfManager</name>
+    <description>Mavenized JSF example</description>    
+   
+    <properties>
+        <!-- maven properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.war.plugin.version>3.3.2</maven.war.plugin.version>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        
+        <!-- code properties -->
+        <connectorj.version>8.0.31</connectorj.version>
+        <jakartaee-api.version>8.0.0</jakartaee-api.version>
+    </properties>
+    
+    <dependencies>  
+        <dependency>  
+            <groupId>mysql</groupId>  
+            <artifactId>mysql-connector-java</artifactId>  
+            <version>${connectorj.version}</version>  
+        </dependency>  
+        <dependency>  
+            <groupId>jakarta.platform</groupId>  
+            <artifactId>jakarta.jakartaee-api</artifactId>  
+            <version>${jakartaee-api.version}</version>  
+            <scope>provided</scope>  
+        </dependency>  
+    </dependencies>   
+      
+    <build>  
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven.war.plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>    
+    
+</project>
