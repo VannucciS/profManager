@@ -1,13 +1,8 @@
-/*****************************************************************
- * File: InventoryController.java
- * Course materials CST 8277
- * 
- * @author (original) Prof. Mike Norman
- *
- */
+
 package com.pm.ProfManager.jsf;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,14 +36,10 @@ public class ProfessorController implements Serializable {
     @SessionMap
     private Map<String, Object> session;
     
-    private static Map<String,String> regions;
-    static {
-        //label, value
-        regions = new LinkedHashMap<String,String>();
-        regions.put("Canada", "CA");
-        regions.put("United States", "US");
-    }
-
+   
+    //Modified version of the map, now switched by an arraylist
+    private static List<String> regions;
+   
     protected String region = "CA";
     protected ProfessorDao theDao;
     protected List<Professor> theInventoryList;
@@ -56,9 +47,15 @@ public class ProfessorController implements Serializable {
     @Inject
     public ProfessorController(ProfessorDao theDao) {
         this.theDao = theDao;
+        loadRegions();
     }
 
-    public void loadInventory() {
+    private void loadRegions() {
+		regions=theDao.getRegions();
+		
+	}
+
+	public void loadInventory() {
         theInventoryList = theDao.readAllInventoryForRegion(region);
     }
 
@@ -69,7 +66,7 @@ public class ProfessorController implements Serializable {
         this.region = region;
     }
 
-    public Map<String, String> getRegions() {
+    public List<String> getRegions() {
         return regions;
     }
 

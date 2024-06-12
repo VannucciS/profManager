@@ -39,6 +39,8 @@ public class ProfessorDaoImpl implements ProfessorDao, Serializable {
     		"UPDATE REGIONAL_INVENTORY SET RETAILER_NAME = ?, CURR_INV_LEVEL = ?, REGION = ?, UPDATED = now(), VERSION = VERSION + 1 WHERE INV_ID = ?";
     public static final String DELETE_SPECIFIC_INVENTORY_BY_ID_SQL =
     		"DELETE FROM REGIONAL_INVENTORY WHERE INV_ID = ?";
+    public static final String GET_ALL_MAJORS_SQL = 
+    		"SELECT DISTINCT REGION FROM REGIONAL_INVENTORY";
     
     @Inject
     protected ServletContext ctx;
@@ -55,6 +57,7 @@ public class ProfessorDaoImpl implements ProfessorDao, Serializable {
     protected PreparedStatement readInventoryByIdPstmt;
     protected PreparedStatement updateInventoryByIdPstmt;
     protected PreparedStatement deleteInventoryByIdPstmt;
+    protected PreparedStatement getRegionsPstmt;
     
     @PostConstruct
     protected void buildConnectionAndStatements() {
@@ -67,6 +70,7 @@ public class ProfessorDaoImpl implements ProfessorDao, Serializable {
             readInventoryByIdPstmt = conn.prepareStatement(GET_SPECIFIC_INVENTORY_BY_ID_SQL);
             updateInventoryByIdPstmt = conn.prepareStatement(UPDATE_SPECIFIC_INVENTORY_BY_ID_SQL);
             deleteInventoryByIdPstmt = conn.prepareStatement(DELETE_SPECIFIC_INVENTORY_BY_ID_SQL);
+            getRegionsPstmt = conn.prepareStatement(GET_ALL_MAJORS_SQL);
         }
         catch (Exception e) {
             logMsg("something went wrong getting connection: " + e.getLocalizedMessage());
@@ -83,6 +87,7 @@ public class ProfessorDaoImpl implements ProfessorDao, Serializable {
             readInventoryByIdPstmt.close();
             updateInventoryByIdPstmt.close();
             deleteInventoryByIdPstmt.close();
+            getRegionsPstmt.close();
             conn.close();
         }
         catch (Exception e) {
@@ -117,7 +122,7 @@ public class ProfessorDaoImpl implements ProfessorDao, Serializable {
         return inventoryList;
     }
 
-    //TODO - fill in rest of C-R-U-D methods
+    
     public void createInventory(Professor inv) {
     	// INV_ID, RETAILER_NAME, CURR_INV_LEVEL, REGION
     	try {
@@ -152,8 +157,7 @@ public class ProfessorDaoImpl implements ProfessorDao, Serializable {
     	return inv;
     }
     
-    public void updateInventory(Professor inv) {
-    	//UPDATE REGIONAL_INVENTORY SET RETAILER_NAME = ?, CURR_INV_LEVEL = ?, REGION = ?, UPDATED = now(), VERSION = VERSION + 1 WHERE INV_ID = ?
+    public void updateInventory(Professor inv) {    	
     	try {
     		updateInventoryByIdPstmt.setString(1, inv.getProfessorName());
     		updateInventoryByIdPstmt.setLong(2, inv.getAge());
@@ -175,5 +179,20 @@ public class ProfessorDaoImpl implements ProfessorDao, Serializable {
             logMsg("something went wrong accessing database: " + e.getLocalizedMessage());
     	}
     }
+
+	@Override
+	public List<String> getRegions() {
+		List<String> regionList = new ArrayList<>();
+		try {
+			ResultSet rs = getRegionsPstmt.executeQuery();
+			while(rs.next()) {
+				regionList.add(rs.getString("REGION"));
+			}
+			rs.close();
+		} catch(SQLException e) {
+			logMsg("something went wrong accessing database: " + e.getLocalizedMessage());
+		}
+			return regionList;
+	}
 
 }

@@ -17,8 +17,12 @@ public interface ProfessorDao {
 	
     // R - read all inventory for the specified region
     public List<Professor> readAllInventoryForRegion(String region);
+    
     // R - read a specific inventory
     Professor readInventoryById(int invId);
+    
+    // 	R - read all regions
+    List<String> getRegions();
 
     // Update
     void updateInventory(Professor inv);

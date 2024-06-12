@@ -55,7 +55,7 @@
     <h:form>
       <h:selectOneMenu value="#{professorController.region}" onchange="submit()"
         valueChangeListener="#{professorController.valueChangeMethod}">
-        <f:selectItems value="#{professorController.regions}" />
+        <f:selectItems value="#{professorController.regions}"  itemLabel="#{region.name}"/>
       </h:selectOneMenu>
     </h:form>
     
